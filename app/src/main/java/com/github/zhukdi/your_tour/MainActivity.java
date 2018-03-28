@@ -2,9 +2,12 @@ package com.github.zhukdi.your_tour;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -26,6 +29,17 @@ public class MainActivity extends AppCompatActivity {
         if (isServicesOK()) {
             init();
         }
+
+//        BottomNavigationView bottomNavigationView = new (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()):
+//                case R.id.
+//
+//                return false;
+//            }
+//        });
     }
 
     private void init() {
