@@ -3,6 +3,7 @@ package com.github.zhukdi.your_tour;
 import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,13 +31,21 @@ public class MainActivity extends AppCompatActivity {
             init();
         }
 
-//        BottomNavigationView bottomNavigationView = new (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
 //        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 //            @Override
 //            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()):
-//                case R.id.
+//                switch (item.getItemId()) {
+//                    case R.id.ic_map:
+//                        Intent intent = new Intent()
+//                        break;
 //
+//                    case R.id.ic_weather:
+//                        break;
+//
+//                    case R.id.ic_rate:
+//                        break;
+//                }
 //                return false;
 //            }
 //        });

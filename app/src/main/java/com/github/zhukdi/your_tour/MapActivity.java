@@ -1,6 +1,8 @@
 package com.github.zhukdi.your_tour;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -8,11 +10,14 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -21,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -64,6 +71,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private static final String TAG = "MapActivity";
 
+    private static final int ERROR_DIALOG_REQUEST = 9001;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
@@ -81,11 +89,59 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-        mSearchText = (EditText) findViewById(R.id.input_search);
-        mGps = (ImageView) findViewById(R.id.ic_gps);
+        if (isServicesOK()) {
+            setContentView(R.layout.activity_map);
 
-        getLocationPermission();
+            mSearchText = (EditText) findViewById(R.id.input_search);
+            mGps = (ImageView) findViewById(R.id.ic_gps);
+
+            getLocationPermission();
+
+            BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
+            Menu menu = bottomNavigationView.getMenu();
+            MenuItem menuItem = menu.getItem(0);
+            menuItem.setChecked(true);
+
+            bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.ic_map:
+
+                            break;
+
+                        case R.id.ic_weather:
+                            Intent intent1 = new Intent(MapActivity.this, WeatherActivity.class);
+                            startActivity(intent1);
+                            break;
+
+                        case R.id.ic_rate:
+                            Intent intent2 = new Intent(MapActivity.this, RateActivity.class);
+                            startActivity(intent2);
+                            break;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
+    public boolean isServicesOK() {
+        Log.d(TAG, "isServicesOK: checking google services version");
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MapActivity.this);
+
+        if (available == ConnectionResult.SUCCESS) {
+            //everything is fine and the user can make map requests
+            Log.d(TAG, "isServicesOK: Google Play Services is working");
+            return true;
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+            //an error occured but we can resolve it
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MapActivity.this, available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        } else {
+            Toast.makeText(this, "You can't make map request", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 
     private void init() {
