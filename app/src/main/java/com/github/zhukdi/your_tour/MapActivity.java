@@ -34,6 +34,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,6 +50,24 @@ import java.util.List;
  */
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private static final String TAG = "MapActivity";
+
+    private static final int ERROR_DIALOG_REQUEST = 9001;
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+    private static final float DEFAULT_ZOOM = 15f;
+
+    //widgets
+    private EditText mSearchText;
+    private ImageView mGps;
+
+    //vars
+    private Boolean mLocationPermissionsGranted = false;
+    private GoogleMap mMap;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private ArrayList<LatLng> listPoints;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -69,23 +89,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-    private static final String TAG = "MapActivity";
-
-    private static final int ERROR_DIALOG_REQUEST = 9001;
-    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-    private static final float DEFAULT_ZOOM = 15f;
-
-    //widgets
-    private EditText mSearchText;
-    private ImageView mGps;
-
-    //vars
-    private Boolean mLocationPermissionsGranted = false;
-    private GoogleMap mMap;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +97,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             mSearchText = (EditText) findViewById(R.id.input_search);
             mGps = (ImageView) findViewById(R.id.ic_gps);
+
+            listPoints = new ArrayList<>();
 
             getLocationPermission();
 
@@ -146,6 +151,31 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void init() {
         Log.d(TAG, "init: initializing");
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                //Reset market when already 2
+                if (listPoints.size() == 2) {
+                    listPoints.clear();
+                    mMap.clear();
+                }
+                //Save first point select
+                listPoints.add(latLng);
+                //Create market
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                if (listPoints.size() == 1) {
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                } else {
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                }
+                mMap.addMarker(markerOptions);
+
+                //TODO: request get direction code
+            }
+        });
 
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

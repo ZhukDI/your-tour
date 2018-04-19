@@ -204,7 +204,7 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
             txtHumidity.setText(String.format("%d%%", openWeatherMap.getMain().getHumidity()));
             txtTime.setText(String.format("%s/%s", Common.timeConverter(openWeatherMap.getSys().getSunrise()),
                                                    Common.timeConverter(openWeatherMap.getSys().getSunset())));
-            txtCelsius.setText(String.format("%s.2f °C", openWeatherMap.getMain().getTemp()));
+            txtCelsius.setText(String.format("%.2f °C", openWeatherMap.getMain().getTemp()));
             Picasso.with(WeatherActivity.this)
                     .load(Common.getImage(openWeatherMap.getWeather().get(0).getIcon()))
                     .into(imageView);
