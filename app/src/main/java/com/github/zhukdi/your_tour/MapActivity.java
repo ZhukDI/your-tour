@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -36,7 +37,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -57,6 +57,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+
 /**
  * Created by Dmitry on 3/19/2018.
  */
@@ -70,6 +72,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
+    private static final int PROXIMITY_RADIUS = 1000000;
 
     //widgets
     private EditText mSearchText;
@@ -78,6 +81,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     //vars
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
+    Location currentLocation;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private ArrayList<LatLng> listPoints;
     private PolylineOptions polylineOptions;
@@ -142,6 +146,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     return false;
                 }
             });
+
+            FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fabSpeedDial);
+            fabSpeedDial.setMenuListener(new FabSpeedDial.MenuListener() {
+                @Override
+                public boolean onPrepareMenu(NavigationMenu navigationMenu) {
+                    return true;
+                }
+
+                @Override
+                public boolean onMenuItemSelected(MenuItem menuItem) {
+                    switch (menuItem.getItemId()) {
+                        case R.id.action_restaurant:
+                            String restaurant = "restaurant";
+                            String url = getUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), restaurant); //TODO: change
+                            Object dataTransfer[] = new Object[2];
+                            dataTransfer[0] = mMap;
+                            dataTransfer[1] = url;
+
+                            GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+                            getNearbyPlacesData.execute(dataTransfer);
+                            Toast.makeText(MapActivity.this, "Showing restaurants", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                    return true;
+                }
+
+                @Override
+                public void onMenuClosed() {
+
+                }
+            });
         }
     }
 
@@ -204,7 +239,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         || keyEvent.getAction() == KeyEvent.ACTION_DOWN
                         || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
 
-                    //execute our method for searching
+                    //execute method for searching
                     geoLocate();
                 }
 
@@ -299,7 +334,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: found location!");
-                            Location currentLocation = (Location) task.getResult();
+                            currentLocation = (Location) task.getResult();
 
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM,
@@ -441,5 +476,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Toast.makeText(getApplicationContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private String getUrl(double latitude, double longitute, String nearbyPlace) {
+        StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googlePlaceUrl.append("location=" + latitude + "," + longitute);
+        googlePlaceUrl.append("&radius=" + PROXIMITY_RADIUS);
+        googlePlaceUrl.append("&type=" + nearbyPlace);
+        googlePlaceUrl.append("&sensor=true");
+        googlePlaceUrl.append("&key=AIzaSyAOH3GNnI6R3RwJqygqf3ciMFHp6TismDA");
+        System.out.println(googlePlaceUrl);
+        return googlePlaceUrl.toString();
     }
 }
