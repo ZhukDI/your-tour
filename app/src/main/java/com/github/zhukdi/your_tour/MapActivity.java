@@ -80,6 +80,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private ArrayList<LatLng> listPoints;
+    private PolylineOptions polylineOptions;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -111,6 +112,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             mGps = (ImageView) findViewById(R.id.ic_gps);
 
             listPoints = new ArrayList<>();
+            polylineOptions = new PolylineOptions();
 
             getLocationPermission();
 
@@ -168,11 +170,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onMapLongClick(LatLng latLng) {
+                //TODO: Added exit condition
                 //Reset market when already 2
-                if (listPoints.size() == 2) {
-                    listPoints.clear();
-                    mMap.clear();
-                }
+//                if (listPoints.size() == 2) {
+//                    listPoints.clear();
+//                    mMap.clear();
+//                }
                 //Save first point select
                 listPoints.add(latLng);
                 //Create market
@@ -185,8 +188,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
                 mMap.addMarker(markerOptions);
 
-                if (listPoints.size() == 2) {
-                    String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
+                if (listPoints.size() >= 2) {
+                    String url = getRequestUrl(listPoints.get(listPoints.size() - 2), listPoints.get(listPoints.size() - 1));
                     TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
                     taskRequestDirections.execute(url);
                 }
@@ -417,12 +420,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
-            //Get list route and display it into the map
             ArrayList points = null;
-            PolylineOptions polylineOptions = null;
             for (List<HashMap<String, String>> path : lists) {
                 points = new ArrayList();
-                polylineOptions = new PolylineOptions();
 
                 for (HashMap<String, String> point : path) {
                     double lat = Double.parseDouble(point.get("lat"));
