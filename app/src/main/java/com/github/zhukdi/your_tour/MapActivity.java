@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.zhukdi.your_tour.helper.DownloadUrl;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -82,7 +83,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
     Location currentLocation;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
     private ArrayList<LatLng> listPoints;
     private PolylineOptions polylineOptions;
 
@@ -159,7 +159,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     switch (menuItem.getItemId()) {
                         case R.id.action_restaurant:
                             String restaurant = "restaurant";
-                            String url = getUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), restaurant); //TODO: change
+                            String url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), restaurant);
                             Object dataTransfer[] = new Object[2];
                             dataTransfer[0] = mMap;
                             dataTransfer[1] = url;
@@ -324,8 +324,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void getDeviceLocation() {
-        Log.d(TAG, "getDeviceLocation: getting the devices curent location");
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        Log.d(TAG, "getDeviceLocation: getting the devices current location");
+        FusedLocationProviderClient mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
             if (mLocationPermissionsGranted) {
                 final Task location = mFusedLocationProviderClient.getLastLocation();
@@ -421,7 +421,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         protected String doInBackground(String... strings) {
             String responseString = "";
             try {
-                responseString = requestDirection(strings[0]);
+                responseString = DownloadUrl.readUrl(strings[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -478,14 +478,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-    private String getUrl(double latitude, double longitute, String nearbyPlace) {
+    private String getNearbyPlaceUrl(double latitude, double longitute, String nearbyPlace) {
         StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlaceUrl.append("location=" + latitude + "," + longitute);
         googlePlaceUrl.append("&radius=" + PROXIMITY_RADIUS);
         googlePlaceUrl.append("&type=" + nearbyPlace);
         googlePlaceUrl.append("&sensor=true");
         googlePlaceUrl.append("&key=AIzaSyAOH3GNnI6R3RwJqygqf3ciMFHp6TismDA");
-        System.out.println(googlePlaceUrl);
         return googlePlaceUrl.toString();
     }
 }

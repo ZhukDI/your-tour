@@ -23,12 +23,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.zhukdi.your_tour.common.Common;
-import com.github.zhukdi.your_tour.helper.Helper;
+import com.github.zhukdi.your_tour.helper.DownloadUrl;
 import com.github.zhukdi.your_tour.model.OpenWeatherMap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 /**
@@ -180,9 +181,11 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
         protected String doInBackground(String... strings) {
             String stream = null;
             String urlString = strings[0];
-
-            Helper http = new Helper();
-            stream = http.getHTTPData(urlString);
+            try {
+                stream = DownloadUrl.readUrl(urlString);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return stream;
         }
 

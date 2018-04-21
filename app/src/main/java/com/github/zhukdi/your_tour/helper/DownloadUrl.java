@@ -1,11 +1,10 @@
-package com.github.zhukdi.your_tour;
+package com.github.zhukdi.your_tour.helper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -14,7 +13,7 @@ import java.net.URL;
 
 public class DownloadUrl {
 
-    public String readUrl(String reqUrl) throws IOException {
+    public static String readUrl(String reqUrl) throws IOException {
         String responseString = "";
         InputStream inputStream = null;
         HttpURLConnection httpURLConnection = null;

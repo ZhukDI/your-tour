@@ -2,6 +2,7 @@ package com.github.zhukdi.your_tour;
 
 import android.os.AsyncTask;
 
+import com.github.zhukdi.your_tour.helper.DownloadUrl;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -26,9 +27,8 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
         mMap = (GoogleMap)objects[0];
         url = (String)objects[1];
 
-        DownloadUrl downloadUrl = new DownloadUrl();
         try {
-            googlePlacesData = downloadUrl.readUrl(url);
+            googlePlacesData = DownloadUrl.readUrl(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
