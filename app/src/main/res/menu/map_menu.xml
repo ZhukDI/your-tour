@@ -5,9 +5,9 @@
         android:icon="@drawable/ic_map_mark"
         android:title="Mark" />
     <item
-        android:id="@+id/action_school"
-        android:icon="@drawable/ic_map_school"
-        android:title="Schools"/>
+        android:id="@+id/action_movie_theater"
+        android:icon="@drawable/ic_map_movie_theater"
+        android:title="Movies"/>
     <item
         android:id="@+id/action_restaurant"
         android:icon="@drawable/ic_map_restaurant"

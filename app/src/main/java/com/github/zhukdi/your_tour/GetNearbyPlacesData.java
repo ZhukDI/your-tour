@@ -1,9 +1,15 @@
 package com.github.zhukdi.your_tour;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 
 import com.github.zhukdi.your_tour.helper.DownloadUrl;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -49,6 +55,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
         for (int i = 0;  i < nearbyPlacesList.size(); i++) {
             MarkerOptions markerOptions = new MarkerOptions();
             HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
+//            System.out.println(googlePlace);
 
             String placeName = googlePlace.get("place_name");
             String vicinity = googlePlace.get("vicinity");
@@ -59,6 +66,11 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             markerOptions.position(latLng);
             markerOptions.title(placeName + " : " + vicinity);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+//            if (placeName.equals("restaurant")) {
+//                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_restaurant_map));
+//            } else {
+//                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+//            }
 
             mMap.addMarker(markerOptions);
         }

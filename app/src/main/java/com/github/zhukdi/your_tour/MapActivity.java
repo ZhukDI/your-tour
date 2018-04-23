@@ -2,6 +2,7 @@ package com.github.zhukdi.your_tour;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -156,17 +157,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 @Override
                 public boolean onMenuItemSelected(MenuItem menuItem) {
+                    Object dataTransfer[] = new Object[2];
+                    GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
                     switch (menuItem.getItemId()) {
                         case R.id.action_restaurant:
+                            mMap.clear();
                             String restaurant = "restaurant";
                             String url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), restaurant);
-                            Object dataTransfer[] = new Object[2];
                             dataTransfer[0] = mMap;
                             dataTransfer[1] = url;
-
-                            GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
                             getNearbyPlacesData.execute(dataTransfer);
                             Toast.makeText(MapActivity.this, "Showing restaurants", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.action_movie_theater:
+                            mMap.clear();
+                            String movie_theater = "movie_theater";
+                            url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), movie_theater);
+                            dataTransfer[0] = mMap;
+                            dataTransfer[1] = url;
+                            getNearbyPlacesData.execute(dataTransfer);
+                            Toast.makeText(MapActivity.this, "Showing movie theaters", Toast.LENGTH_SHORT).show();
                             break;
                     }
                     return true;
