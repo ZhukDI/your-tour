@@ -7,29 +7,23 @@
     android:layout_height="match_parent"
     tools:context="com.github.zhukdi.your_tour.MainActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Map"
-        android:id="@+id/btnMap" />
-
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:id="@+id/bottomBar"
-        android:layout_alignParentBottom="true">
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"
+        />
 
-        <android.support.design.widget.BottomNavigationView
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            app:menu="@menu/nav_items"
-            app:itemBackground="@color/colorPrimary"
-            app:itemIconTint="@color/nav_item_colors"
-            app:itemTextColor="@color/nav_item_colors"
-            android:id="@+id/bottom_navigation_bar" />
-    </RelativeLayout>
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_navigation"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@color/nav_item_colors"
+        app:itemTextColor="@color/nav_item_colors"
+        />
 
 
 </RelativeLayout>

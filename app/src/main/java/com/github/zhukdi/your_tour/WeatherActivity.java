@@ -53,31 +53,7 @@ public class WeatherActivity extends AppCompatActivity implements LocationListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
-        Menu menu = bottomNavigationView.getMenu();
-        MenuItem menuItem = menu.getItem(1);
-        menuItem.setChecked(true);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.ic_map:
-                        Intent intent0 = new Intent(WeatherActivity.this, MapActivity.class);
-                        startActivity(intent0);
-                        break;
-
-                    case R.id.ic_weather:
-                        break;
-
-                    case R.id.ic_rate:
-                        Intent intent2 = new Intent(WeatherActivity.this, RateActivity.class);
-                        startActivity(intent2);
-                        break;
-                }
-                return false;
-            }
-        });
 
         txtCity = (TextView) findViewById(R.id.txtCity);
 //        txtUpdate = (TextView) findViewById(R.id.txt);
