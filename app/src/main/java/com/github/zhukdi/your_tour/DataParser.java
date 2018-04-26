@@ -1,6 +1,7 @@
 package com.github.zhukdi.your_tour;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 
@@ -17,6 +18,25 @@ import java.util.List;
  */
 
 public class DataParser {
+
+    private HashMap<String, String> getDuration(JSONArray googleDirectionJson) {
+        HashMap<String, String> googleDirectionsMap = new HashMap<>();
+        String duration = "";
+        String distance = "";
+
+        Log.d(googleDirectionJson.toString(), "getDuration: json response");
+        try {
+            duration = googleDirectionJson.getJSONObject(0).getJSONObject("duration").getString("text");
+            distance = googleDirectionJson.getJSONObject(0).getJSONObject("distance").getString("text");
+
+            googleDirectionsMap.put("duration", duration);
+            googleDirectionsMap.put("distance", distance);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return googleDirectionsMap;
+    }
 
     private HashMap<String, String> getPlace(JSONObject googlePlaceJson) {
         HashMap<String, String> googlePlaceMap = new HashMap<>();
@@ -72,5 +92,18 @@ public class DataParser {
         }
         return getPlaces(jsonArray);
     }
+
+    public HashMap<String, String> parseDirections(String jsonData) {
+        JSONArray jsonArray = null;
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            jsonArray = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return getDuration(jsonArray);
+    }
+
+
 
 }

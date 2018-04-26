@@ -167,8 +167,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     public boolean isServicesOK() {
@@ -209,13 +207,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 markerOptions.position(latLng);
                 if (listPoints.size() == 1) {
                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    mMap.addMarker(markerOptions);
                 } else {
                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 }
-                mMap.addMarker(markerOptions);
 
                 if (listPoints.size() >= 2) {
-                    String url = getRequestUrl(listPoints.get(listPoints.size() - 2), listPoints.get(listPoints.size() - 1));
+                    String url = getDirectionsUrl(listPoints.get(listPoints.size() - 2), listPoints.get(listPoints.size() - 1));
+                    GetDirectionsData getDirectionsData = new GetDirectionsData();
+                    Object dataTransfer[] = new Object[3];
+                    dataTransfer[0] = mMap;
+                    dataTransfer[1] = url;
+                    dataTransfer[2] = new LatLng(listPoints.get(listPoints.size() - 1).latitude, listPoints.get(listPoints.size() - 1).longitude);
+                    getDirectionsData.execute(dataTransfer);
                     TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
                     taskRequestDirections.execute(url);
                 }
@@ -246,17 +250,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
         hideSoftKeyboard();
-    }
-
-    private String getRequestUrl(LatLng origin, LatLng dest) {
-        String str_org = "origin=" + origin.latitude + "," + origin.longitude;
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        String sensor = "sensor=false";
-        String mode = "mode=driving";
-        String param = str_org + "&" + str_dest + "&" + sensor + "&" + mode;
-        String output = "json";
-        String url = "http://maps.googleapis.com/maps/api/directions/" + output + "?" + param;
-        return url;
     }
 
     private String requestDirection(String reqUrl) throws IOException {
@@ -422,7 +415,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             super.onPostExecute(s);
             //Parse json here
             TaskParser taskParser = new TaskParser();
-//            MapFragment.TaskParser taskParser = new MapFragment().TaskParser();
             taskParser.execute(s);
         }
     }
@@ -466,6 +458,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Toast.makeText(getContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private String getDirectionsUrl(LatLng origin, LatLng dest) {
+        StringBuilder googleDirectionsUrl = new StringBuilder("https://maps.googleapis.com/maps/api/directions/json?");
+        googleDirectionsUrl.append("origin=" + origin.latitude + "," + origin.longitude);
+        googleDirectionsUrl.append("&destination="+dest.latitude + "," + dest.longitude);
+        googleDirectionsUrl.append("&key=AIzaSyBUGsUEA-5UJvL3TKmoo4AMaXmWn4zWfiA");
+        return googleDirectionsUrl.toString();
     }
 
     private String getNearbyPlaceUrl(double latitude, double longitute, String nearbyPlace) {
