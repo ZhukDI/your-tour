@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new WeatherFragment();
                             break;
                         case R.id.nav_rate:
-                            selectedFragment = new RateFragment();
+                            selectedFragment = new PlaceListFragment();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

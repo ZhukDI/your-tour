@@ -60,6 +60,9 @@ import java.util.List;
 
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 
+import static com.github.zhukdi.your_tour.settings.AppSettings.GOOGLE_PLACES_LOCATION_RADIUS;
+import static com.github.zhukdi.your_tour.settings.AppSettings.currentLocation;
+
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = "MapFragment";
@@ -69,7 +72,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
-    private static final int PROXIMITY_RADIUS = 1000000;
 
     //widgets
     private EditText mSearchText;
@@ -78,7 +80,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     //vars
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
-    Location currentLocation;
+//    Location currentLocation;
     private ArrayList<LatLng> listPoints;
     private PolylineOptions polylineOptions;
 
@@ -118,7 +120,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             mMap.clear();
                             String restaurant = "restaurant";
                             String url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), restaurant);
-                            dataTransfer[0] = mMap;
+                            dataTransfer[0] = mMap; //ToDO: change to ArrayList<Place>
                             dataTransfer[1] = url;
                             getNearbyPlacesData.execute(dataTransfer);
                             Toast.makeText(getActivity(), "Showing restaurants", Toast.LENGTH_SHORT).show();
@@ -127,11 +129,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             mMap.clear();
                             String movie_theater = "movie_theater";
                             url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), movie_theater);
-                            dataTransfer[0] = mMap;
+                            dataTransfer[0] = mMap; //ToDO: change to ArrayList<Place>
                             dataTransfer[1] = url;
                             getNearbyPlacesData.execute(dataTransfer);
                             Toast.makeText(getActivity(), "Showing movie theaters", Toast.LENGTH_SHORT).show();
                             break;
+                        case R.id.action_mark:
+                            url = getPlaceDetailsUrl();
+                            dataTransfer[0] = url;
+                            GetPlaceDetailsData getPlaceDetailsData = new GetPlaceDetailsData();
+                            getPlaceDetailsData.execute(dataTransfer);
                     }
                     return true;
                 }
@@ -471,11 +478,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private String getNearbyPlaceUrl(double latitude, double longitute, String nearbyPlace) {
         StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlaceUrl.append("location=" + latitude + "," + longitute);
-        googlePlaceUrl.append("&radius=" + PROXIMITY_RADIUS);
+        googlePlaceUrl.append("&radius=" + GOOGLE_PLACES_LOCATION_RADIUS);
         googlePlaceUrl.append("&type=" + nearbyPlace);
         googlePlaceUrl.append("&sensor=true");
         googlePlaceUrl.append("&key=AIzaSyAOH3GNnI6R3RwJqygqf3ciMFHp6TismDA");
         return googlePlaceUrl.toString();
+    }
+
+    private String getPlaceDetailsUrl() {
+        StringBuilder googlePlaceDetailsUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/details/json?");
+//        googlePlaceDetailsUrl.append("placeid=" + placeid);
+        googlePlaceDetailsUrl.append("placeid=" + "ChIJN1t_tDeuEmsRUsoyG83frY4");
+        googlePlaceDetailsUrl.append("&key=AIzaSyAOH3GNnI6R3RwJqygqf3ciMFHp6TismDA");
+        return googlePlaceDetailsUrl.toString();
     }
 
 }

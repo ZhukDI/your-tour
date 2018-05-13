@@ -39,6 +39,7 @@ public class DataParser {
     }
 
     private HashMap<String, String> getPlace(JSONObject googlePlaceJson) {
+        //ToDo: change to return Place.class
         HashMap<String, String> googlePlaceMap = new HashMap<>();
         String placeName = "-NA-";
         String vicinity = "-NA-";
@@ -82,6 +83,39 @@ public class DataParser {
         return placesList;
     }
 
+    private PlaceDetails getPlaceDetails(JSONObject jsonObject) {
+//        PlaceDetails placeDetails = new PlaceDetails();
+        String formattedAddress = "";
+        String formattedPhoneNumber = "";
+        String icon = "";
+        String name = "";
+        double rating = 0;
+        String website = "";
+        try {
+            if (!jsonObject.isNull("formatted_address")) {
+                formattedAddress = jsonObject.getString("formatted_address");
+            }
+            if (!jsonObject.isNull("formatted_phone_number")) {
+                formattedPhoneNumber = jsonObject.getString("formatted_phone_number");
+            }
+            if (!jsonObject.isNull("icon")) {
+                icon = jsonObject.getString("icon");
+            }
+            if (!jsonObject.isNull("name")) {
+                name = jsonObject.getString("name");
+            }
+            if (!jsonObject.isNull("rating")) {
+                rating = jsonObject.getDouble("rating");
+            }
+            if (!jsonObject.isNull("website")) {
+                website = jsonObject.getString("website");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new PlaceDetails(formattedAddress, formattedPhoneNumber, icon, name, rating, website);
+    }
+
     public List<HashMap<String, String>> parse(String jsonData) {
         JSONArray jsonArray = null;
         try {
@@ -104,6 +138,21 @@ public class DataParser {
         return getDuration(jsonArray);
     }
 
+    public HashMap<String, String> parsePlaceDetailsData(String jsonData) {
+        JSONObject jsonObject = null;
+        JSONObject jsonPlaceDetails = null;
+        try {
+            jsonObject = new JSONObject(jsonData);
+            jsonPlaceDetails = jsonObject.getJSONObject("result");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println(jsonPlaceDetails);
+        System.out.println("_______________________________________");
+        System.out.println(getPlaceDetails(jsonPlaceDetails));
+        System.out.println("_______________________________________");
+        return null;
+    }
 
 
 }
