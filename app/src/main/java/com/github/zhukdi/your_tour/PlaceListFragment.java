@@ -84,11 +84,14 @@ public class PlaceListFragment extends Fragment {
                     @Override
                     public void onResponse(String s) {
                         progressDialog.dismiss();
-                        List<HashMap<String, String>> nearbyPlaceListJson = null;
+                        ArrayList<Place> nearbyPlaceList = null;
                         DataParser dataParser = new DataParser();
-                        nearbyPlaceListJson = dataParser.parse(s);
+                        placeList = dataParser.parse(s);
 
-                        placeList = getGooglePlaces(nearbyPlaceListJson);
+                        // temp
+                        for (int i = 0; i < placeList.size(); i++) {
+                            System.out.println(placeList.get(i));
+                        }
 
                         adapter = new PlaceAdapter(placeList, getContext());
                         recyclerView.setAdapter(adapter);
@@ -102,23 +105,6 @@ public class PlaceListFragment extends Fragment {
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(stringRequest);
-    }
-
-    private List<Place> getGooglePlaces(List<HashMap<String, String>> nearbyPlaceList) {
-        List<Place> googlePlaces = new ArrayList<>();
-        for (int i = 0;  i < nearbyPlaceList.size(); i++) {
-            HashMap<String, String> googlePlace = nearbyPlaceList.get(i);
-            String placeId = googlePlace.get("id");
-            String placeName = googlePlace.get("place_name");
-            double lat = Double.parseDouble(googlePlace.get("lat"));
-            double lng = Double.parseDouble(googlePlace.get("lng"));
-            String vicinity = googlePlace.get("vicinity");
-            ArrayList photos = new ArrayList();
-            System.out.println("_________________________");
-            System.out.println(googlePlace);
-            googlePlaces.add(new Place(placeId, placeName, lat, lng, vicinity, photos));
-        }
-        return googlePlaces;
     }
 
     private String getNearbyPlaceUrl(double latitude, double longitute, String nearbyPlace) {

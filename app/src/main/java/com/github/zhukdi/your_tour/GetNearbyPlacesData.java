@@ -44,30 +44,11 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        List<HashMap<String, String>> nearbyPlaceList = null;
         DataParser dataParser = new DataParser();
-        nearbyPlaceList = dataParser.parse(s);
-        getGooglePlaces(nearbyPlaceList);
-        System.out.println("GetNearbyPlacesData: " + googlePlaces.size());
-//        showNearbyPlaces(nearbyPlaceList);
+        googlePlaces.addAll(dataParser.parse(s));
     }
 
-    private void getGooglePlaces(List<HashMap<String, String>> nearbyPlacesList) {
-        for (int i = 0;  i < nearbyPlacesList.size(); i++) {
-            HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
-            String placeId = googlePlace.get("id");
-            String placeName = googlePlace.get("place_name");
-            double lat = Double.parseDouble(googlePlace.get("lat"));
-            double lng = Double.parseDouble(googlePlace.get("lng"));
-            String vicinity = googlePlace.get("vicinity");
-            ArrayList photos = new ArrayList();
-            googlePlaces.add(new Place(placeId, placeName, lat, lng, vicinity, photos));
-        }
-    }
 
-    public ArrayList<Place> getGooglePlaces() {
-        return this.googlePlaces;
-    }
 
 //    private void showNearbyPlaces(List<HashMap<String, String>> nearbyPlacesList) {
 //        for (int i = 0;  i < nearbyPlacesList.size(); i++) {

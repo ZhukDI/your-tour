@@ -12,19 +12,25 @@ public class Place {
     private double lat;
     private double lng;
     private String vicinity;
-    private ArrayList photos;
+    private Double rating;
+    private ArrayList<PlacePhoto> photos;
+
+    public Place() {
+
+    }
 
     public Place(String name, String vicinity) {
         this.name = name;
         this.vicinity = vicinity;
     }
 
-    public Place(String id, String name, double lat, double lng, String vicinity, ArrayList photos) {
+    public Place(String id, String name, double lat, double lng, String vicinity, Double rating, ArrayList<PlacePhoto> photos) {
         this.id = id;
         this.name = name;
         this.lat = lat;
         this.lng = lng;
         this.vicinity = vicinity;
+        this.rating = rating;
         this.photos = photos;
     }
 
@@ -68,6 +74,22 @@ public class Place {
         this.vicinity = vicinity;
     }
 
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public ArrayList<PlacePhoto> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(ArrayList<PlacePhoto> photos) {
+        this.photos = photos;
+    }
+
     @Override
     public String toString() {
         return "Place{" +
@@ -76,6 +98,8 @@ public class Place {
                 ", lat=" + lat +
                 ", lng=" + lng +
                 ", vicinity='" + vicinity + '\'' +
+                ", rating=" + rating +
+                ", photos=" + photos +
                 '}';
     }
 }
