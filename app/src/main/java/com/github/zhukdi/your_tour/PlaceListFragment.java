@@ -2,7 +2,6 @@ package com.github.zhukdi.your_tour;
 
 
 import android.app.ProgressDialog;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,12 +19,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.zhukdi.your_tour.adapter.PlaceAdapter;
 import com.github.zhukdi.your_tour.model.Place;
-import com.github.zhukdi.your_tour.settings.AppSettings;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import static com.github.zhukdi.your_tour.settings.AppSettings.GOOGLE_PLACES_API_KEY;
 import static com.github.zhukdi.your_tour.settings.AppSettings.GOOGLE_PLACES_LOCATION_RADIUS;
 import static com.github.zhukdi.your_tour.settings.AppSettings.currentLocation;
 
@@ -47,26 +45,6 @@ public class PlaceListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         placeList = new ArrayList<>();
-//        loadRecyclerViewData();
-
-//        for (int i = 0; i < 5; i++) {
-//            Place place = new Place("name" + (i+1), "temp vicinity");
-//            placeList.add(place);
-//        }
-//        Object dataTransfer[] = new Object[2];
-//        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-//        String restaurant = "restaurant";
-////        String url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), restaurant);
-//        String url = getNearbyPlaceUrl(53.888674, 27.442427, restaurant);
-//        dataTransfer[0] = placeList;
-//        dataTransfer[1] = url;
-//        getNearbyPlacesData.execute(dataTransfer);
-//        placeList = getNearbyPlacesData.getGooglePlaces();
-//        System.out.println("************************");
-////        System.out.println(placeList.size());
-//        adapter = new PlaceAdapter(placeList, getContext());
-//        recyclerView.setAdapter(adapter);
-
         loadRecyclerViewData();
 
         return view;
@@ -78,15 +56,16 @@ public class PlaceListFragment extends Fragment {
         progressDialog.show();
 
         String nearbyPlaceType = "restaurant"; //ToDo: make it dynamic
+
         String url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), nearbyPlaceType);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         progressDialog.dismiss();
-                        ArrayList<Place> nearbyPlaceList = null;
+
                         DataParser dataParser = new DataParser();
-                        placeList = dataParser.parse(s);
+                        placeList = dataParser.parsePlaceList(s);
 
                         // temp
                         for (int i = 0; i < placeList.size(); i++) {
@@ -113,7 +92,7 @@ public class PlaceListFragment extends Fragment {
         googlePlaceUrl.append("&radius=" + GOOGLE_PLACES_LOCATION_RADIUS);
         googlePlaceUrl.append("&type=" + nearbyPlace);
         googlePlaceUrl.append("&sensor=true");
-        googlePlaceUrl.append("&key=AIzaSyAOH3GNnI6R3RwJqygqf3ciMFHp6TismDA");
+        googlePlaceUrl.append("&key=" + GOOGLE_PLACES_API_KEY);
         return googlePlaceUrl.toString();
     }
 

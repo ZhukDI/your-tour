@@ -4,15 +4,9 @@ import android.os.AsyncTask;
 
 import com.github.zhukdi.your_tour.helper.DownloadUrl;
 import com.github.zhukdi.your_tour.model.Place;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Dmitry on 4/21/2018.
@@ -45,7 +39,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     @Override
     protected void onPostExecute(String s) {
         DataParser dataParser = new DataParser();
-        googlePlaces.addAll(dataParser.parse(s));
+        googlePlaces.addAll(dataParser.parsePlaceList(s));
     }
 
 

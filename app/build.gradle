@@ -33,9 +33,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:11.8.0'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.squareup.okhttp3:parent:3.10.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     //Custom Library
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
     compile 'com.android.volley:volley:1.1.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

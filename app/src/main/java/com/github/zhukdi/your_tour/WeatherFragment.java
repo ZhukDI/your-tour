@@ -190,9 +190,7 @@ public class WeatherFragment extends Fragment implements LocationListener {
             txtTime.setText(String.format("%s/%s", Common.timeConverter(openWeatherMap.getSys().getSunrise()),
                     Common.timeConverter(openWeatherMap.getSys().getSunset())));
             txtCelsius.setText(String.format("%.2f °C", openWeatherMap.getMain().getTemp()));
-            Picasso.with(getContext())
-                    .load(Common.getImage(openWeatherMap.getWeather().get(0).getIcon()))
-                    .into(imageView);
+            Picasso.get().load(Common.getImage(openWeatherMap.getWeather().get(0).getIcon())).into(imageView);
         }
     }
 }

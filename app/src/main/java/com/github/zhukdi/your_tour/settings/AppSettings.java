@@ -14,4 +14,6 @@ public class AppSettings {
 
     public static final String OPEN_WEATHER_MAP_KEY = "4bcc1ce632994fe5647884e0fae87f01";
 
+    public static final String GOOGLE_PLACES_API_KEY = "AIzaSyAOH3GNnI6R3RwJqygqf3ciMFHp6TismDA";
+
 }

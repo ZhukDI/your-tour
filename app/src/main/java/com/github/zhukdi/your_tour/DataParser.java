@@ -143,7 +143,7 @@ public class DataParser {
         return new PlaceDetails(formattedAddress, formattedPhoneNumber, icon, name, rating, website);
     }
 
-    public ArrayList<Place> parse(String jsonData) {
+    public ArrayList<Place> parsePlaceList(String jsonData) {
         JSONArray jsonArray = null;
         try {
             JSONObject jsonObject = new JSONObject(jsonData);
