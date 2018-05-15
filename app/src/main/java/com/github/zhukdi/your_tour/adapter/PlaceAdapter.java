@@ -40,7 +40,8 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         Place place = placeList.get(position);
         holder.textViewName.setText(place.getName());
         holder.textViewVicinity.setText(place.getVicinity());
-        ImageUtils.loadGooglePhoto(holder.imageViewPlacePhoto, place.getPhotos().get(0).getPhotoReference());
+        if (place.getPhotos() != null)
+            ImageUtils.loadGooglePhoto(holder.imageViewPlacePhoto, place.getPhotos().get(0).getPhotoReference());
     }
 
     @Override

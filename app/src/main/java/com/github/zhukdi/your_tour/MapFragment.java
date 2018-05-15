@@ -81,7 +81,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     //vars
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
-//    Location currentLocation;
     private ArrayList<LatLng> listPoints;
     private PolylineOptions polylineOptions;
 
