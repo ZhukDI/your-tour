@@ -41,6 +41,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PlaceListActivity" />
+        <activity android:name=".MapActivity" />
 
     </application>
 

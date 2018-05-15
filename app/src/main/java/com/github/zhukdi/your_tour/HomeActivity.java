@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView sleepTextView;
     private TextView eatTextView;
     private TextView enjoyTextView;
+    private LinearLayout mapButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         sleepTextView = (TextView) findViewById(R.id.fra_home_sleep_btn);
         eatTextView = (TextView) findViewById(R.id.fra_home_eat_btn);
         enjoyTextView = (TextView) findViewById(R.id.fra_home_enjoy_btn);
+        mapButton = (LinearLayout) findViewById(R.id.fra_home_btn_map);
 
         if (!mLocationPermissionsGranted) {
             getLocationPermission();
@@ -69,17 +72,28 @@ public class HomeActivity extends AppCompatActivity {
 
         enjoyTextView.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View view) {openPlaceList("night_club");
+            }
+        });
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
-                openPlaceList("night_club");
+                openMapActivity();
             }
         });
 
 
     }
 
-    public void openPlaceList(String placeType) {
+    private void openPlaceList(String placeType) {
         Intent intent = new Intent(this, PlaceListActivity.class);
         intent.putExtra("TYPE", placeType);
+        startActivity(intent);
+    }
+
+    private void openMapActivity() {
+        Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 

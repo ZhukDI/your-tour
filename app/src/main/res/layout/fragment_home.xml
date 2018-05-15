@@ -184,7 +184,7 @@
             android:background="@android:color/white"/>
 
         <LinearLayout
-            android:id="@+id/fra_home_btn_nearby"
+            android:id="@+id/fra_home_btn_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/fra_home_delimiter_2"
