@@ -3,6 +3,7 @@ package com.github.zhukdi.your_tour;
 import android.util.Log;
 
 import com.github.zhukdi.your_tour.model.Place;
+import com.github.zhukdi.your_tour.model.PlaceDetails;
 import com.github.zhukdi.your_tour.model.PlacePhoto;
 
 import org.json.JSONArray;
