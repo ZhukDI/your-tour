@@ -1,8 +1,9 @@
-package com.github.zhukdi.your_tour;
+package com.github.zhukdi.your_tour.services;
 
 import android.os.AsyncTask;
 
-import com.github.zhukdi.your_tour.helper.DownloadUrl;
+import com.github.zhukdi.your_tour.parsers.DataParser;
+import com.github.zhukdi.your_tour.helpers.DownloadUrl;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -10,7 +11,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Dmitry on 4/26/2018.

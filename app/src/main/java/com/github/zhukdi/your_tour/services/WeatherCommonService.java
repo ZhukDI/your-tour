@@ -1,4 +1,4 @@
-package com.github.zhukdi.your_tour.common;
+package com.github.zhukdi.your_tour.services;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,7 +10,7 @@ import static com.github.zhukdi.your_tour.settings.AppSettings.OPEN_WEATHER_MAP_
  * Created by Dmitry on 3/31/2018.
  */
 
-public class Common {
+public class WeatherCommonService {
 
     public static String API_LINK = "http://api.openweathermap.org/data/2.5/weather";
 

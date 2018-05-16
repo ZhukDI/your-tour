@@ -1,4 +1,4 @@
-package com.github.zhukdi.your_tour;
+package com.github.zhukdi.your_tour.parsers;
 
 import com.google.android.gms.maps.model.LatLng;
 

@@ -7,6 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.github.zhukdi.your_tour.fragments.MapFragment;
+import com.github.zhukdi.your_tour.fragments.PlaceListFragment;
+import com.github.zhukdi.your_tour.fragments.WeatherFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";

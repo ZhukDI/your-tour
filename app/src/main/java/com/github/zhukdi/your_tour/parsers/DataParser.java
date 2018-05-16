@@ -1,10 +1,10 @@
-package com.github.zhukdi.your_tour;
+package com.github.zhukdi.your_tour.parsers;
 
 import android.util.Log;
 
-import com.github.zhukdi.your_tour.model.Place;
-import com.github.zhukdi.your_tour.model.PlaceDetails;
-import com.github.zhukdi.your_tour.model.PlacePhoto;
+import com.github.zhukdi.your_tour.models.Place;
+import com.github.zhukdi.your_tour.models.PlaceDetails;
+import com.github.zhukdi.your_tour.models.PlacePhoto;
 
 import org.json.JSONArray;
 import org.json.JSONException;

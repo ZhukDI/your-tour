@@ -1,4 +1,4 @@
-package com.github.zhukdi.your_tour.helper;
+package com.github.zhukdi.your_tour.helpers;
 
 import android.widget.ImageView;
 

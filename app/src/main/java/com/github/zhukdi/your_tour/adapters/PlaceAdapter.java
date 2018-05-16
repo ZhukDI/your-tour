@@ -1,4 +1,4 @@
-package com.github.zhukdi.your_tour.adapter;
+package com.github.zhukdi.your_tour.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.zhukdi.your_tour.R;
-import com.github.zhukdi.your_tour.helper.ImageUtils;
-import com.github.zhukdi.your_tour.model.Place;
+import com.github.zhukdi.your_tour.helpers.ImageUtils;
+import com.github.zhukdi.your_tour.models.Place;
 
 import java.util.List;
 

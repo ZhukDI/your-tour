@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.github.zhukdi.your_tour.PlaceListFragment">
+    tools:context="com.github.zhukdi.your_tour.fragments.PlaceListFragment">
 
     <TextView
         android:layout_width="wrap_content"

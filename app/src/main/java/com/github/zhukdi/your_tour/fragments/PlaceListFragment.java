@@ -1,4 +1,4 @@
-package com.github.zhukdi.your_tour;
+package com.github.zhukdi.your_tour.fragments;
 
 
 import android.app.ProgressDialog;
@@ -18,8 +18,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.zhukdi.your_tour.adapter.PlaceAdapter;
-import com.github.zhukdi.your_tour.model.Place;
+import com.github.zhukdi.your_tour.parsers.DataParser;
+import com.github.zhukdi.your_tour.R;
+import com.github.zhukdi.your_tour.adapters.PlaceAdapter;
+import com.github.zhukdi.your_tour.models.Place;
 
 import java.util.ArrayList;
 import java.util.List;

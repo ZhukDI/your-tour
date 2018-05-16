@@ -1,4 +1,4 @@
-package com.github.zhukdi.your_tour.model;
+package com.github.zhukdi.your_tour.models;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.github.zhukdi.your_tour;
+package com.github.zhukdi.your_tour.fragments;
 
 
 import android.Manifest;
@@ -21,9 +21,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.zhukdi.your_tour.common.Common;
-import com.github.zhukdi.your_tour.helper.DownloadUrl;
-import com.github.zhukdi.your_tour.model.OpenWeatherMap;
+import com.github.zhukdi.your_tour.R;
+import com.github.zhukdi.your_tour.services.WeatherCommonService;
+import com.github.zhukdi.your_tour.helpers.DownloadUrl;
+import com.github.zhukdi.your_tour.models.OpenWeatherMap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
@@ -130,7 +131,7 @@ public class WeatherFragment extends Fragment implements LocationListener {
         lat = location.getLatitude();
         lng = location.getLongitude();
 
-        new GetWeather().execute(Common.apiRequest(String.valueOf(lat), String.valueOf(lng)));
+        new GetWeather().execute(WeatherCommonService.apiRequest(String.valueOf(lat), String.valueOf(lng)));
     }
 
     @Override
@@ -187,10 +188,10 @@ public class WeatherFragment extends Fragment implements LocationListener {
 //            txtLastUpdate
             txtDescription.setText(String.format("%s", openWeatherMap.getWeather().get(0).getDescription()));
             txtHumidity.setText(String.format("%d%%", openWeatherMap.getMain().getHumidity()));
-            txtTime.setText(String.format("%s/%s", Common.timeConverter(openWeatherMap.getSys().getSunrise()),
-                    Common.timeConverter(openWeatherMap.getSys().getSunset())));
+            txtTime.setText(String.format("%s/%s", WeatherCommonService.timeConverter(openWeatherMap.getSys().getSunrise()),
+                    WeatherCommonService.timeConverter(openWeatherMap.getSys().getSunset())));
             txtCelsius.setText(String.format("%.2f °C", openWeatherMap.getMain().getTemp()));
-            Picasso.get().load(Common.getImage(openWeatherMap.getWeather().get(0).getIcon())).into(imageView);
+            Picasso.get().load(WeatherCommonService.getImage(openWeatherMap.getWeather().get(0).getIcon())).into(imageView);
         }
     }
 }

@@ -1,6 +1,6 @@
-package com.github.zhukdi.your_tour;
+package com.github.zhukdi.your_tour.services;
 
-import com.github.zhukdi.your_tour.model.Place;
+import com.github.zhukdi.your_tour.models.Place;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;

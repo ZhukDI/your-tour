@@ -1,4 +1,4 @@
-package com.github.zhukdi.your_tour.model;
+package com.github.zhukdi.your_tour.models;
 
 /**
  * Created by Dmitry on 5/1/2018.
