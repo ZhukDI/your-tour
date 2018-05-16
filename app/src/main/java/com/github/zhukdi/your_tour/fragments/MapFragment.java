@@ -59,8 +59,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.github.yavski.fabspeeddial.FabSpeedDial;
-
 import static com.github.zhukdi.your_tour.settings.AppSettings.GOOGLE_PLACES_LOCATION_RADIUS;
 import static com.github.zhukdi.your_tour.settings.AppSettings.currentLocation;
 
@@ -103,51 +101,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             polylineOptions = new PolylineOptions();
 
             getLocationPermission();
-
-            FabSpeedDial fabSpeedDial = (FabSpeedDial) view.findViewById(R.id.fabSpeedDial);
-            fabSpeedDial.setMenuListener(new FabSpeedDial.MenuListener() {
-                @Override
-                public boolean onPrepareMenu(NavigationMenu navigationMenu) {
-                    return true;
-                }
-
-                @Override
-                public boolean onMenuItemSelected(MenuItem menuItem) {
-                    Object dataTransfer[] = new Object[2];
-                    GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-                    switch (menuItem.getItemId()) {
-                        case R.id.action_restaurant:
-                            mMap.clear();
-                            String restaurant = "restaurant";
-                            String url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), restaurant);
-                            dataTransfer[0] = mMap; //ToDO: change to ArrayList<Place>
-                            dataTransfer[1] = url;
-                            getNearbyPlacesData.execute(dataTransfer);
-                            Toast.makeText(getActivity(), "Showing restaurants", Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.action_movie_theater:
-                            mMap.clear();
-                            String movie_theater = "movie_theater";
-                            url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), movie_theater);
-                            dataTransfer[0] = mMap; //ToDO: change to ArrayList<Place>
-                            dataTransfer[1] = url;
-                            getNearbyPlacesData.execute(dataTransfer);
-                            Toast.makeText(getActivity(), "Showing movie theaters", Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.action_mark:
-                            url = getPlaceDetailsUrl();
-                            dataTransfer[0] = url;
-                            GetPlaceDetailsData getPlaceDetailsData = new GetPlaceDetailsData();
-                            getPlaceDetailsData.execute(dataTransfer);
-                    }
-                    return true;
-                }
-
-                @Override
-                public void onMenuClosed() {
-
-                }
-            });
         }
 
     }
