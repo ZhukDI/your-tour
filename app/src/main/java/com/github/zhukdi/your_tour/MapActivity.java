@@ -8,12 +8,13 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.internal.NavigationMenu;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -42,6 +43,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+
+import static com.github.zhukdi.your_tour.settings.AppSettings.GOOGLE_PLACES_LOCATION_RADIUS;
 import static com.github.zhukdi.your_tour.settings.AppSettings.currentLocation;
 
 /**
@@ -73,6 +77,48 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             listPoints = new ArrayList<>();
             polylineOptions = new PolylineOptions();
+
+            FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fabSpeedDial);
+            fabSpeedDial.setMenuListener(new FabSpeedDial.MenuListener() {
+                @Override
+                public boolean onPrepareMenu(NavigationMenu navigationMenu) {
+                    return true;
+                }
+
+                @Override
+                public boolean onMenuItemSelected(MenuItem menuItem) {
+                    Object dataTransfer[] = new Object[2];
+                    GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+                    switch (menuItem.getItemId()) {
+                        case R.id.action_restaurant:
+                            mMap.clear();
+                            String restaurant = "restaurant";
+                            String url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), restaurant);
+                            dataTransfer[0] = mMap; //ToDO: change to ArrayList<Place>
+                            dataTransfer[1] = url;
+                            getNearbyPlacesData.execute(dataTransfer);
+                            Toast.makeText(getApplicationContext(), "Showing restaurants", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.action_movie_theater:
+                            mMap.clear();
+                            String movie_theater = "movie_theater";
+                            url = getNearbyPlaceUrl(currentLocation.getLatitude(), currentLocation.getLongitude(), movie_theater);
+                            dataTransfer[0] = mMap;
+                            dataTransfer[1] = url;
+                            getNearbyPlacesData.execute(dataTransfer);
+                            Toast.makeText(getApplicationContext(), "Showing movie theaters", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.action_mark:
+                            break;
+                    }
+                    return true;
+                }
+
+                @Override
+                public void onMenuClosed() {
+
+                }
+            });
 
             initMap();
         }
@@ -321,6 +367,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         googleDirectionsUrl.append("&destination="+dest.latitude + "," + dest.longitude);
         googleDirectionsUrl.append("&key=AIzaSyBUGsUEA-5UJvL3TKmoo4AMaXmWn4zWfiA");
         return googleDirectionsUrl.toString();
+    }
+
+    private String getNearbyPlaceUrl(double latitude, double longitute, String nearbyPlace) {
+        StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googlePlaceUrl.append("location=" + latitude + "," + longitute);
+        googlePlaceUrl.append("&radius=" + GOOGLE_PLACES_LOCATION_RADIUS);
+        googlePlaceUrl.append("&type=" + nearbyPlace);
+        googlePlaceUrl.append("&sensor=true");
+        googlePlaceUrl.append("&key=AIzaSyAOH3GNnI6R3RwJqygqf3ciMFHp6TismDA");
+        return googlePlaceUrl.toString();
     }
 
 }
